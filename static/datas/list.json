@@ -1,0 +1,36 @@
+{
+	"data": [{
+		"id": 1,
+		"router":{"name":"NewList"},
+		"img": "https://s2.ax1x.com/2019/08/31/mzyunJ.jpg",
+		"title":"新闻资讯"
+	}, {
+		"id": 2,
+		"router":{"name":"PhotoList","query":{"categoryId":0}},
+		"img": "https://s2.ax1x.com/2019/08/31/mzyVpT.jpg",
+		"title":"图文分享"
+	}, {
+		"id": 3,
+		"router":{"name":"NewListCC"},
+		"img": "https://s2.ax1x.com/2019/08/31/mzyAhV.jpg",
+		"title":"CCC"
+	}, {
+		"id": 4,
+		"router":{"name":"NewListDD"},
+		"img": "https://s2.ax1x.com/2019/08/31/mzylA1.jpg",
+		"title":"DDD"
+	},{
+		"id": 5,
+		"router":{"name":"NewListEE"},
+		"img": "https://s2.ax1x.com/2019/08/31/mzyunJ.jpg",
+		"title":"EEE"
+	}, {
+		"id": 6,
+		"router":{"name":"NewListFF"},
+		"img": "https://s2.ax1x.com/2019/08/31/mzyVpT.jpg",
+		"title":"FFF"
+	}],
+	"success": true,
+	"message": "",
+	"code": 200
+}
