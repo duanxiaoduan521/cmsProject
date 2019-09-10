@@ -5,12 +5,12 @@
         <li class="photo-t">
           <span class="fl">提交评论</span>
           <span class="fr">
-            <a>返回</a>
+            <a @click="goback">返回</a>
           </span>
         </li>
         <li class="photo-c">
           <input type="text" v-model="content1" placeholder="请输入用户名"/>
-          <textarea v-model="content2" placeholder="请输入内容"></textarea>
+          <input v-model="content2" placeholder="请输入内容"/>
         </li>
         <li class="button">
           <mt-button type="primary" size="large" @click="sendMsg">发表评论按钮</mt-button>
@@ -28,7 +28,7 @@
           :key="index"
         >{{item.user_name}}:{{item.content}}{{item.add_time | relTime}}</li>
       </ul>
-      <mt-button type="danger" plain size="large">加载更多按钮</mt-button>
+      <mt-button type="danger" plain size="large" @click="loadMsgByPage" :disabled="disabled">加载更多按钮</mt-button>
     </div>
   </div>
 </template>
@@ -37,19 +37,19 @@
 export default {
   name: "Comment",
   props: ["cid"],
-  page: 1,
   data() {
     return {
       msgs: [],
       content1:"",
       content2:"",
-      // content: `{
-      //   user_name:1,
-      //   content:2
-      //   }` //发表评论的信息
+      page:1,
+      disabled:false
     };
   },
   methods: {
+    init(){
+        this.page = 1;
+    },
     // 发表评论
     sendMsg() {
       this.$axios
@@ -58,20 +58,42 @@ export default {
           "content": `${this.content2}`
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
+          // 页码归一
+          this.init();
           // 加载最新的数据
-          this.loadMsgByPage(1);
+          this.loadMsgByPage();
+          
         })
         .catch(err => {
           console.log(err);
         });
     },
-    loadMsgByPage(page) {
+    goback(){
+        this.$router.go(-1);
+    },
+    loadMsgByPage() {
       this.$axios
-        .get(`getcomments/${this.cid}/${page}`)
+        .get(`getcomments/${this.cid}/${this.page}`)
         .then(res => {
-          console.log(res);
-          this.msgs = res.data.data;
+          // console.log(res);
+          // 判断相应数据是否不足5条，如果是，禁止按钮并给提示
+          if(res.data.data.length < 5){
+              this.$toast({
+                message: '没有数据了',
+                iconClass: 'icon icon-success'
+              });
+              // 禁止再次点击
+              this.disabled = true;
+              return;
+          }
+          // 有时赋值，有时追加（this.page===1）
+          if(this.page === 1){
+            this.msgs = res.data.data;
+          }else{
+            this.msgs = this.msgs.concat(res.data.data)
+          }
+            this.page++;
         })
         .catch(err => {
           console.log(err);
@@ -79,7 +101,7 @@ export default {
     }
   },
   created() {
-    this.loadMsgByPage(1);
+    this.loadMsgByPage();
   }
 };
 </script>
@@ -100,9 +122,9 @@ export default {
 .photo-c {
   width: 100%;
 }
-.photo-c textarea {
-  width: 100%;
-  height: 50px;
+.photo-c input {
+  margin: 0 5px;
+  height: 30px;
 }
 .button {
   width: 100%;
