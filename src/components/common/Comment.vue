@@ -5,11 +5,12 @@
         <li class="photo-t">
           <span class="fl">提交评论</span>
           <span class="fr">
-            <a @click="goback">返回</a>
+            <a>返回</a>
           </span>
         </li>
         <li class="photo-c">
-          <textarea v-model="content"></textarea>
+          <input type="text" v-model="content1" placeholder="请输入用户名"/>
+          <textarea v-model="content2" placeholder="请输入内容"></textarea>
         </li>
         <li class="button">
           <mt-button type="primary" size="large" @click="sendMsg">发表评论按钮</mt-button>
@@ -22,11 +23,12 @@
         </li>
       </ul>
       <ul class="photo-list">
-        <li>匿名用户1：大家好 2018-09-05</li>
-        <li>匿名用户2：大家好 2018-09-05</li>
-        <li>匿名用户3：大家好 2018-09-05</li>
+        <li
+          v-for="(item,index) in msgs"
+          :key="index"
+        >{{item.user_name}}:{{item.content}}{{item.add_time | relTime}}</li>
       </ul>
-      <mt-button type="danger" plain size="large" @click="loadMsgByPage">加载更多按钮</mt-button>
+      <mt-button type="danger" plain size="large">加载更多按钮</mt-button>
     </div>
   </div>
 </template>
@@ -38,58 +40,46 @@ export default {
   page: 1,
   data() {
     return {
-      msgs: [
-        {
-          user_name: "匿名1",
-          add_time: "2015-04-19T20:09:30.000Z",
-          content: "我来评价一下啦"
-        }
-      ],
-      content: "" //发表评论的信息
+      msgs: [],
+      content1:"",
+      content2:"",
+      // content: `{
+      //   user_name:1,
+      //   content:2
+      //   }` //发表评论的信息
     };
   },
   methods: {
-    init() {
-      this.page = 1;
-    },
     // 发表评论
     sendMsg() {
       this.$axios
-        .post(`postcomment/${this.cid}`, `content=${this.content}`)
+        .post(`postcomment/${this.cid}`, {
+          "user_name":`${this.content1}`,
+          "content": `${this.content2}`
+        })
         .then(res => {
-          // 页码归1
-          this.init();
+          console.log(res);
           // 加载最新的数据
-          this.loadMsgByPage();
+          this.loadMsgByPage(1);
         })
         .catch(err => {
           console.log(err);
         });
     },
-    // 加载页码
-    loadMsgByPage() {
+    loadMsgByPage(page) {
       this.$axios
-        .get(`getcomments/${this.cid}?pageindex=${this.page}`)
+        .get(`getcomments/${this.cid}/${page}`)
         .then(res => {
-          // console.log(res.data.data);
-          // 优势赋值，有时追加this.page===1
-          if (this.page === 1) {
-            this.msgs = res.data.data;
-          } else {
-              this.msgs = this.msgs.concat(res.data.data)
-          }
-          this.page++;
+          console.log(res);
+          this.msgs = res.data.data;
         })
         .catch(err => {
           console.log(err);
         });
-    },
-    goback(){
-        this.$router.go(-1);
     }
   },
   created() {
-    this.loadMsgByPage();
+    this.loadMsgByPage(1);
   }
 };
 </script>
