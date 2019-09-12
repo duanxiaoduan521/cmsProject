@@ -42,7 +42,7 @@ export default {
           img: 'https://s2.ax1x.com/2019/08/31/mzyunJ.jpg',
           title: '图文分享'
         },{
-          route: { name: 'Show'},
+          route: { name: 'GoodsShow',params:{page:1}},
           img: 'https://s2.ax1x.com/2019/08/31/mzyunJ.jpg',
           title: '商品展示'
         },

@@ -8,6 +8,7 @@ import NewList from '@/components/NewList/NewList'
 import NewsDetail from '@/components/NewList/NewsDetail'
 import PhotoList from '@/components/PhotoList/PhotoList'
 import PhotoDetail from '@/components/PhotoList/PhotoDetail'
+import GoodsShow from '@/components/Goods/GoodsShow'
 
 Vue.use(Router)
 export default new Router({
@@ -44,6 +45,10 @@ export default new Router({
       path: '/photo/NewsDetail/:id',
       name: 'PhotoDetail',
       component: PhotoDetail
+    },{
+      path: '/goods/list/:page',
+      name: 'GoodsShow',
+      component: GoodsShow
     }
   ]
 })
