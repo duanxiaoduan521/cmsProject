@@ -30,7 +30,7 @@ export default {
   },
   created() {
     this.$axios
-      .get("NewsList.json")
+      .get("NewsList")
       .then(res => {
         this.list = res.data.data;
         // console.log(this.list);

@@ -79,6 +79,17 @@ Vue.filter('convertTime', function (data, format) {
 Vue.filter('relTime', function (time) {
   return Moment(time).fromNow()
 });
+// 控制字数显示的过滤器
+Vue.filter('controllShow',function(str,num){
+  // 如果当前字符串小于num,返回原值
+  if(str.length <= num){
+    return str;
+  }
+  // 如果当前字符串大于num，截取0-num-1位
+  if(str.length >num){
+    return str.substr(0,num-1)+'...';
+  }
+})
 // 定义全局过滤器 结束
 
 /* eslint-disable no-new */
