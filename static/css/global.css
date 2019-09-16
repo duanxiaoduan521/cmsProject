@@ -112,6 +112,7 @@ abbr,acronym { border:0}
 
 /* Copyright 2008 TSXMLOVE. All Rights Reserved. */
 * {
+/* touch-action: none; */
 padding: 0px;
 margin: 0px;
 text-align: left;
